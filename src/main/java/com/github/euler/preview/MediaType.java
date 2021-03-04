@@ -50,8 +50,20 @@ public class MediaType {
         return true;
     }
 
+    public static MediaType text(String subType) {
+        return new MediaType("text", subType);
+    }
+
+    public static MediaType audio(String subType) {
+        return new MediaType("audio", subType);
+    }
+
     public static MediaType image(String subType) {
         return new MediaType("image", subType);
+    }
+
+    public static MediaType application(String subType) {
+        return new MediaType("application", subType);
     }
 
 }
