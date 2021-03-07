@@ -31,15 +31,17 @@ public class JODConverterPreviewGenerator implements PreviewGenerator {
     private Set<MediaType> supportedTypes;
 
     private final Config config;
+    private final OfficeManager officeManager;
 
-    public JODConverterPreviewGenerator() {
-        this(new Config());
-    }
-
-    public JODConverterPreviewGenerator(Config config) {
+    public JODConverterPreviewGenerator(Config config, OfficeManager officeManager) {
         super();
         this.config = config;
+        this.officeManager = officeManager;
         initTypes();
+    }
+
+    public JODConverterPreviewGenerator(OfficeManager officeManager) {
+        this(new Config(), officeManager);
     }
 
     private void initTypes() {
@@ -88,7 +90,6 @@ public class JODConverterPreviewGenerator implements PreviewGenerator {
     }
 
     protected DocumentConverter getConverter(PreviewContext ctx) {
-        OfficeManager officeManager = getOfficeManager(ctx);
         Objects.requireNonNull(officeManager, () -> OfficeManager.class.getName() + " is required to use this converter.");
         Builder builder = LocalConverter.builder()
                 .officeManager(officeManager)
@@ -101,10 +102,6 @@ public class JODConverterPreviewGenerator implements PreviewGenerator {
         return builder.build();
     }
 
-    protected OfficeManager getOfficeManager(PreviewContext ctx) {
-        return ctx.get(OfficeManager.class);
-    }
-
     @Override
     public Long getTotalPages(PreviewContext ctx, MediaType mediaType, InputStream in) {
         return null;
@@ -112,8 +109,6 @@ public class JODConverterPreviewGenerator implements PreviewGenerator {
 
     @Override
     public Long getTotalPages(PreviewContext ctx, MediaType mediaType, File in) throws IOException {
-        OfficeManager officeManager = getOfficeManager(ctx);
-        Objects.requireNonNull(officeManager, () -> OfficeManager.class.getName() + " is required to use this converter.");
         PageCounterFilter filter = new PageCounterFilter();
         LocalConverter converter = LocalConverter.builder()
                 .officeManager(officeManager)
