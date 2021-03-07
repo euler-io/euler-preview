@@ -19,7 +19,7 @@ public class FilePreviewHandler implements PreviewHandler {
 
     @Override
     public void handle(BufferedImage bim) throws IOException {
-        ImageIO.write(bim, formatName, out);
+        ImageIO.write(bim, formatName.toUpperCase(), out);
     }
 
 }

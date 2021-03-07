@@ -19,7 +19,7 @@ public class OutputStreamPreviewHandler implements PreviewHandler {
 
     @Override
     public void handle(BufferedImage im) throws IOException {
-        ImageIO.write(im, formatName, out);
+        ImageIO.write(im, formatName.toUpperCase(), out);
     }
 
 }
