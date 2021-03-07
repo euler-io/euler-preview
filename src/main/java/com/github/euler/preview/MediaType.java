@@ -1,6 +1,11 @@
 package com.github.euler.preview;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class MediaType {
+
+    private static final Pattern REGEX = Pattern.compile("([^\\/]+)\\/([^;]+).*");
 
     private String type;
     private String subType;
@@ -64,6 +69,15 @@ public class MediaType {
 
     public static MediaType application(String subType) {
         return new MediaType("application", subType);
+    }
+
+    public static MediaType parse(String mimeType) {
+        Matcher matcher = REGEX.matcher(mimeType);
+        if (matcher.matches()) {
+            return new MediaType(matcher.group(1), matcher.group(2));
+        } else {
+            throw new IllegalArgumentException(mimeType + " is not a valid mime type.");
+        }
     }
 
 }
