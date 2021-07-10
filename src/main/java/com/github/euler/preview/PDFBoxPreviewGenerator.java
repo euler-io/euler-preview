@@ -12,8 +12,12 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
 import org.apache.pdfbox.rendering.ImageType;
 import org.apache.pdfbox.rendering.PDFRenderer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PDFBoxPreviewGenerator implements PreviewGenerator {
+
+    private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     private static final Set<MediaType> SUPPORTED_TYPES;
 
@@ -41,6 +45,8 @@ public class PDFBoxPreviewGenerator implements PreviewGenerator {
         try {
             document = loadDocument(ctx, in);
             generate(ctx, mediaType, document, handler);
+        } catch (InvalidPasswordException e) {
+            LOGGER.warn("Impossible to generate the preview: {}.", e.getMessage());
         } finally {
             closeDocument(document);
         }
@@ -52,6 +58,8 @@ public class PDFBoxPreviewGenerator implements PreviewGenerator {
         try {
             document = loadDocument(ctx, in);
             generate(ctx, mediaType, document, handler);
+        } catch (InvalidPasswordException e) {
+            LOGGER.warn("Impossible to generate the preview: {}.", e.getMessage());
         } finally {
             closeDocument(document);
         }
